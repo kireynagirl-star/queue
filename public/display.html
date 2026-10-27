@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153d35">
+  <title>หน้าจอเรียกคิวรับสินค้า</title><link rel="stylesheet" href="/style.css">
+</head>
+<body class="display-body">
+<header class="display-header"><div class="brand"><div class="brand-icon">▣</div><div><h1>ขอเชิญรับสินค้า</h1><p>กรุณารอเรียกหมายเลขคิวของท่าน</p></div></div><div id="clock" class="clock"></div></header>
+<main class="display-container">
+  <section class="now-card"><p class="eyebrow">กำลังเรียกคิว</p><div id="currentQueues" class="current-queues"><div class="empty-current">ยังไม่มีคิวที่เรียก</div></div></section>
+  <section class="next-card"><div class="section-heading"><div><h2>คิวที่รอเรียก</h2><p class="muted">ข้อมูลอัปเดตอัตโนมัติทุก 5 วินาที</p></div><span id="waitTotal" class="pill">0 คิว</span></div><div id="waitingQueues" class="waiting-queues"><p class="muted">ไม่มีคิวรอ</p></div></section>
+  <section class="completed-strip"><span>รับสินค้าแล้ววันนี้</span><strong id="completedCount">0</strong></section>
+  <p id="displayError" class="error"></p>
+</main>
+<footer>หากเลขคิวของท่านถูกเรียก กรุณาติดต่อจุดรับสินค้า</footer>
+<script src="/display.js" defer></script>
+</body></html>

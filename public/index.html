@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#CF102D">
+  <title>ออกคิวรับสินค้า</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-icon">▣</div><div><h1>ออกคิวรับสินค้า</h1><p>ระบบจัดการสำหรับพนักงาน</p></div></div>
+  <nav class="header-nav"><a class="header-link" href="/call">จัดการคิวรอเรียก</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a></nav>
+</header>
+<main class="container">
+  <section id="loginPanel" class="panel login-panel">
+    <h2>เข้าสู่ระบบพนักงาน</h2><p class="muted">ใส่รหัสผ่านที่ตั้งไว้ในไฟล์ .env</p>
+    <form id="loginForm"><label for="password">รหัสผ่านพนักงาน</label><input id="password" type="password" required autocomplete="current-password" placeholder="รหัสผ่าน"><button class="primary" type="submit">เข้าสู่ระบบ</button></form>
+    <p id="loginError" class="error" role="alert"></p>
+  </section>
+  <section id="appPanel" hidden>
+    <div class="stats">
+      <div class="stat"><span>รอเรียก</span><strong id="waitingCount">0</strong></div>
+      <div class="stat"><span>กำลังเรียก</span><strong id="callingCount">0</strong></div>
+      <div class="stat"><span>รับสินค้าแล้ว</span><strong id="doneCount">0</strong></div>
+    </div>
+    <section class="panel">
+      <div class="section-heading"><div><h2>ออกคิวใหม่</h2><p class="muted">เลือกประเภทคิว ระบบจะออกหมายเลขให้อัตโนมัติ ไม่ต้องกรอกข้อมูล</p></div><span class="pill">ตรวจสอบการชำระเงินก่อนออกคิว</span></div>
+      <div class="queue-type-buttons" aria-label="เลือกประเภทคิว">
+        <button class="queue-type-button queue-type-a" type="button" data-prefix="A"><strong>คิว A</strong><span>ออกคิว A001, A002…</span></button>
+        <button class="queue-type-button queue-type-c" type="button" data-prefix="C"><strong>คิว C</strong><span>ออกคิว C001, C002…</span></button>
+      </div>
+      <p id="formMessage" class="message" role="status" aria-live="polite"></p>
+    </section>
+    <section class="panel"><div class="section-heading"><div><h2>คิวล่าสุดที่ออก</h2><p class="muted" id="lastUpdated">กำลังโหลดข้อมูล…</p></div></div><div id="recentIssued" class="recent-issued"></div></section>
+  </section>
+  <div id="globalError" class="error" role="alert"></div>
+</main>
+<footer>คิวรับสินค้า · ข้อมูลใช้ร่วมกันผ่านฐานข้อมูลกลาง</footer>
+<script src="/issue.js" defer></script>
+</body></html>
