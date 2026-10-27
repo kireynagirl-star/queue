@@ -6,10 +6,13 @@
   "scripts": {
     "start": "node server.js"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
     "dotenv": "^16.4.7",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "serverless-http": "^3.2.0"
   }
 }

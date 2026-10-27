@@ -1,0 +1,24 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  command = "echo Netlify deploy ready"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/staff"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/call"
+  to = "/call.html"
+  status = 200
+
+[[redirects]]
+  from = "/display"
+  to = "/display.html"
+  status = 200
