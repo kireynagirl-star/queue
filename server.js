@@ -24,7 +24,22 @@ app.disable("x-powered-by");
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static(path.join(__dirname, "public"), { index: "index.html" }));
 
-const staffTokens = new Map();
+// Stateless signed session tokens: safe across separate Netlify Function invocations.
+const sessionSecret = crypto.createHash("sha256").update(process.env.STAFF_PASSWORD).digest();
+function makeStaffToken() {
+  const payload = Buffer.from(JSON.stringify({ exp: Date.now() + 12 * 60 * 60 * 1000, nonce: crypto.randomBytes(16).toString("hex") })).toString("base64url");
+  const signature = crypto.createHmac("sha256", sessionSecret).update(payload).digest("base64url");
+  return `${payload}.${signature}`;
+}
+function validStaffToken(token) {
+  if (typeof token !== "string") return false;
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const expected = crypto.createHmac("sha256", sessionSecret).update(parts[0]).digest("base64url");
+  if (!safeEqual(parts[1], expected)) return false;
+  try { const data = JSON.parse(Buffer.from(parts[0], "base64url").toString()); return Number.isFinite(data.exp) && data.exp > Date.now(); }
+  catch { return false; }
+}
 const DISPLAY_PASSWORD = process.env.DISPLAY_PASSWORD || "";
 const todayBangkok = () => new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Bangkok", year: "numeric", month: "2-digit", day: "2-digit"
@@ -37,9 +52,7 @@ function safeEqual(a, b) {
 }
 function staffAuth(req, res, next) {
   const token = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-  const expires = staffTokens.get(token);
-  if (!token || !expires || expires < Date.now()) {
-    if (token) staffTokens.delete(token);
+  if (!validStaffToken(token)) {
     return res.status(401).json({ error: "กรุณาเข้าสู่ระบบพนักงานใหม่" });
   }
   next();
@@ -65,8 +78,7 @@ app.post("/api/login", (req, res) => {
   if (!safeEqual(password, process.env.STAFF_PASSWORD)) {
     return res.status(401).json({ error: "รหัสผ่านไม่ถูกต้อง" });
   }
-  const token = crypto.randomBytes(32).toString("hex");
-  staffTokens.set(token, Date.now() + 12 * 60 * 60 * 1000);
+  const token = makeStaffToken();
   res.json({ token, expiresInHours: 12 });
 });
 
@@ -137,4 +149,5 @@ app.get("/staff", (_req, res) => res.sendFile(path.join(__dirname, "public", "in
 app.get("/call", (_req, res) => res.sendFile(path.join(__dirname, "public", "call.html")));
 
 const port = Number(process.env.PORT || 3000);
-app.listen(port, () => console.log(`Pickup queue server listening on port ${port}`));
+if (require.main === module) app.listen(port, () => console.log(`Pickup queue server listening on port ${port}`));
+module.exports = app;

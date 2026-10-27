@@ -1,0 +1,16 @@
+วิธี Publish ระบบคิวบน Netlify (ครั้งแรก)
+
+1. แตกไฟล์ ZIP และนำโฟลเดอร์ queue_pickup_system ขึ้น GitHub Repository แบบ Private (ห้ามอัปโหลด .env)
+2. Netlify > Add new project > Import an existing project > GitHub > เลือก Repository
+3. Base directory เว้นว่าง; Build command ตาม netlify.toml; Publish directory = public; Functions directory = netlify/functions
+4. Site configuration > Environment variables > Add variable:
+   SUPABASE_URL = Project URL ของ Supabase
+   SUPABASE_SERVICE_ROLE_KEY = Secret/service_role key (ห้ามแชร์หรือใส่ในไฟล์หน้าเว็บ)
+   STAFF_PASSWORD = รหัสพนักงานอย่างน้อย 12 ตัวอักษร
+   DISPLAY_PASSWORD = รหัสจอแสดงคิว (ถ้าต้องการ)
+5. Deploy site และตรวจสอบ /api/health, /staff, /call, /display
+6. ทดลองออกคิวและเรียกคิวด้วยบัญชีพนักงาน แล้วเปิด /display อีกเครื่องเพื่อตรวจสอบ
+
+หมายเหตุ: อย่าลงไฟล์ .env บน GitHub หรือ Netlify publish directory
+ถ้าเคยแชร์ ZIP เดิมที่มี .env ให้เปลี่ยน service_role key และรหัสพนักงานก่อนใช้งานจริง
+ยังไม่ได้ทดสอบกับ Supabase จริง ต้องทดสอบหลัง Deploy
