@@ -15,16 +15,16 @@ body,.display-body{background:#FFFFFF;color:#000000}
 .brand-icon{background:#ffffff;color:#C8102E;border:1px solid #C8102E}
 .header-link{border:1px solid #C8102E}
 .panel,.stat,.next-card,.current-ticket{background:#FFFFFF;color:#000000}
-.primary{background:#C8102E;color:#000000}
+.primary{background:#C8102E;color:#FFFFFF}
 .secondary{background:#FFFFFF;color:#000000;border:1px solid #C8102E}
 input,select{background:#FFFFFF;color:#000000;border-color:#C7BFC1}
-input:focus,select:focus{border-color:#C8102E;box-shadow:0 0 0 3px #C8102E22}
+input:focus,select:focus{border-color:#C8102E;box-shadow:0 0 0 3px #FFFFFF}
 .stat strong,.queue-code,.queue-product,.message,.pill,.queue-type-button,.recent-ticket{color:#000000}
 .pill,.recent-ticket{background:#ffffff;border:1px solid #C8102E}
 .queue-type-button,.queue-type-a,.queue-type-c{background:#C8102E;color:#ffffff;border-color:#C8102E}
 .queue-type-button:hover{border-color:#A40D26}
 .queue-type-button span,.queue-meta,.queue-note,.queue-product,.muted,.stat span,footer,.current-ticket small{color:#000000}
-.now-card{background:#FFFFFF;color:#000000;border:3px solid #C8102E;box-shadow:0 8px 24px #C8102E12}
+.now-card{background:#FFFFFF;color:#000000;border:3px solid #C8102E;box-shadow:0 8px 24px #FFFFFF
 .eyebrow,.empty-current{color:#000000}
 .empty-current{background:#FFFFFF;border:1px dashed #C8102E}
 .current-ticket{border:2px solid #C8102E}
@@ -32,4 +32,4 @@ input:focus,select:focus{border-color:#C8102E;box-shadow:0 0 0 3px #C8102E22}
 .waiting-ticket{background:#C8102E;color:#ffffff;border:2px solid #C8102E}
 .completed-strip{background:#2d2d2d;color:#ffffff;border:1px solid #C8102E}
 .status-waiting,.status-calling,.status-done{background:#FFFFFF;color:#C8102E;border:1px solid #C8102E}
-.empty{color:#000000;border-color:#C8102E}
+.empty{color:#FFFFFF;border-color:#C8102E}
