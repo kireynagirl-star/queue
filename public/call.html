@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#153d35">
+  <meta name="theme-color" content="#c8102e">
   <title>จัดการคิวรอเรียก</title>
   <link rel="stylesheet" href="/style.css">
 </head>
@@ -12,12 +12,7 @@
   <nav class="header-nav"><a class="header-link" href="/staff">ออกคิวใหม่</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a></nav>
 </header>
 <main class="container">
-  <section id="loginPanel" class="panel login-panel">
-    <h2>เข้าสู่ระบบพนักงาน</h2><p class="muted">ใส่รหัสผ่านที่ตั้งไว้ในไฟล์ .env</p>
-    <form id="loginForm"><label for="password">รหัสผ่านพนักงาน</label><input id="password" type="password" required autocomplete="current-password" placeholder="รหัสผ่าน"><button class="primary" type="submit">เข้าสู่ระบบ</button></form>
-    <p id="loginError" class="error" role="alert"></p>
-  </section>
-  <section id="appPanel" hidden>
+  <section id="appPanel">
     <div class="stats">
       <div class="stat"><span>รอเรียก</span><strong id="waitingCount">0</strong></div>
       <div class="stat"><span>กำลังเรียก</span><strong id="callingCount">0</strong></div>
