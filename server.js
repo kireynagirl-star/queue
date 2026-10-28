@@ -52,12 +52,12 @@ app.get("/api/queues", displayAuth, async (req, res) => {
 });
 
 app.post("/api/queues", async (req, res) => {
-  const prefix = clean(req.body?.prefix || "A", 1).toUpperCase();
-  if (!["A", "C"].includes(prefix)) {
-    return res.status(400).json({ error: "เลือกประเภทคิวได้เฉพาะ A หรือ C" });
+  const prefix = clean(req.body?.prefix || "F", 1).toUpperCase();
+  if (!["F", "N"].includes(prefix)) {
+    return res.status(400).json({ error: "เลือกประเภทคิวได้เฉพาะ F หรือ N" });
   }
   const date = todayBangkok();
-  // Queue suffixes count independently by type (A001, A002… and C001, C002…).
+  // Queue suffixes count independently by type (F001, F002… and N001, N002…).
   // queue_number remains a unique daily ordering number for the existing schema.
   for (let attempt = 0; attempt < 5; attempt++) {
     const { data: lastOrder, error: orderError } = await supabase.from("pickup_queues")
