@@ -1,19 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const crypto = require("crypto");
 const { createClient } = require("@supabase/supabase-js");
 
-const required = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "STAFF_PASSWORD"];
+const required = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 for (const key of required) {
   if (!process.env[key]) {
     console.error(`Missing required environment variable: ${key}. Copy .env.example to .env and fill it in.`);
     process.exit(1);
   }
-}
-if (process.env.STAFF_PASSWORD.length < 12) {
-  console.error("STAFF_PASSWORD must be at least 12 characters.");
-  process.exit(1);
 }
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
@@ -24,39 +19,11 @@ app.disable("x-powered-by");
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static(path.join(__dirname, "public"), { index: "index.html" }));
 
-// Stateless signed session tokens: safe across separate Netlify Function invocations.
-const sessionSecret = crypto.createHash("sha256").update(process.env.STAFF_PASSWORD).digest();
-function makeStaffToken() {
-  const payload = Buffer.from(JSON.stringify({ exp: Date.now() + 12 * 60 * 60 * 1000, nonce: crypto.randomBytes(16).toString("hex") })).toString("base64url");
-  const signature = crypto.createHmac("sha256", sessionSecret).update(payload).digest("base64url");
-  return `${payload}.${signature}`;
-}
-function validStaffToken(token) {
-  if (typeof token !== "string") return false;
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const expected = crypto.createHmac("sha256", sessionSecret).update(parts[0]).digest("base64url");
-  if (!safeEqual(parts[1], expected)) return false;
-  try { const data = JSON.parse(Buffer.from(parts[0], "base64url").toString()); return Number.isFinite(data.exp) && data.exp > Date.now(); }
-  catch { return false; }
-}
 const DISPLAY_PASSWORD = process.env.DISPLAY_PASSWORD || "";
 const todayBangkok = () => new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Bangkok", year: "numeric", month: "2-digit", day: "2-digit"
 }).format(new Date());
 
-function safeEqual(a, b) {
-  const aa = Buffer.from(String(a || ""));
-  const bb = Buffer.from(String(b || ""));
-  return aa.length === bb.length && crypto.timingSafeEqual(aa, bb);
-}
-function staffAuth(req, res, next) {
-  const token = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-  if (!validStaffToken(token)) {
-    return res.status(401).json({ error: "กรุณาเข้าสู่ระบบพนักงานใหม่" });
-  }
-  next();
-}
 function displayAuth(req, res, next) {
   if (!DISPLAY_PASSWORD) return next();
   const token = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -73,14 +40,6 @@ function apiError(res, error) {
 
 app.get("/api/health", (_req, res) => res.json({ ok: true, app: "queue-pickup-system" }));
 
-app.post("/api/login", (req, res) => {
-  const password = String(req.body?.password || "");
-  if (!safeEqual(password, process.env.STAFF_PASSWORD)) {
-    return res.status(401).json({ error: "รหัสผ่านไม่ถูกต้อง" });
-  }
-  const token = makeStaffToken();
-  res.json({ token, expiresInHours: 12 });
-});
 
 app.get("/api/queues", displayAuth, async (req, res) => {
   const date = /^\d{4}-\d{2}-\d{2}$/.test(req.query.date || "") ? req.query.date : todayBangkok();
@@ -92,7 +51,7 @@ app.get("/api/queues", displayAuth, async (req, res) => {
   res.json({ date, queues: data || [] });
 });
 
-app.post("/api/queues", staffAuth, async (req, res) => {
+app.post("/api/queues", async (req, res) => {
   const prefix = clean(req.body?.prefix || "A", 1).toUpperCase();
   if (!["A", "C"].includes(prefix)) {
     return res.status(400).json({ error: "เลือกประเภทคิวได้เฉพาะ A หรือ C" });
@@ -127,7 +86,7 @@ app.post("/api/queues", staffAuth, async (req, res) => {
   res.status(409).json({ error: "มีการออกคิวพร้อมกันหลายรายการ กรุณาลองอีกครั้ง" });
 });
 
-app.patch("/api/queues/:id", staffAuth, async (req, res) => {
+app.patch("/api/queues/:id", async (req, res) => {
   const id = Number(req.params.id);
   const status = clean(req.body?.status, 20);
   if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: "รหัสคิวไม่ถูกต้อง" });

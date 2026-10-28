@@ -1,0 +1,7 @@
+เวอร์ชันไม่มีหน้า Login
+1. อัปโหลดไฟล์ที่แตก ZIP แล้วทั้งหมด (ไม่ใช่ไฟล์ ZIP) ไปยัง GitHub repository เดิม และ Commit
+2. Netlify จะ Deploy ใหม่จาก main
+3. เปิด /staff, /call, /display เพื่อทดสอบ
+4. SUPABASE_URL และ SUPABASE_SERVICE_ROLE_KEY ยังคงต้องตั้งค่าใน Netlify
+5. STAFF_PASSWORD ไม่จำเป็นสำหรับเวอร์ชันนี้
+คำเตือน: ทุกคนที่มี URL /staff หรือ /call สามารถออกคิวและเปลี่ยนสถานะคิวได้ ควรจำกัดการเข้าถึงก่อนใช้งานจริง
