@@ -22,3 +22,8 @@
   from = "/display"
   to = "/display.html"
   status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200

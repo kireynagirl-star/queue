@@ -6,10 +6,10 @@
   <title>ออกคิวรับสินค้า</title>
   <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="auth-pending">
 <header class="topbar">
   <div class="brand"><div class="brand-icon">▣</div><div><h1>ออกคิวรับสินค้า</h1><p>ระบบจัดการสำหรับพนักงาน</p></div></div>
-  <nav class="header-nav"><a class="header-link" href="/call">จัดการคิวรอเรียก</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a></nav>
+  <nav class="header-nav"><a class="header-link" href="/call">จัดการคิวรอเรียก</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a><button id="logoutBtn" class="header-link logout-button" type="button">ออกจากระบบ</button></nav>
 </header>
 <main class="container">
   <section id="appPanel">
@@ -21,15 +21,16 @@
     <section class="panel">
       <div class="section-heading"><div><h2>ออกคิวใหม่</h2><p class="muted">เลือกประเภทคิว ระบบจะออกหมายเลขให้อัตโนมัติ ไม่ต้องกรอกข้อมูล</p></div><span class="pill">ตรวจสอบการชำระเงินก่อนออกคิว</span></div>
       <div class="queue-type-buttons" aria-label="เลือกประเภทคิว">
-        <button class="queue-type-button queue-type-a" type="button" data-prefix="F"><strong>คิว Fast Lane</strong><span1>ออกคิว F001, F002…</span1></button>
-        <button class="queue-type-button queue-type-c" type="button" data-prefix="N"><strong>คิว Normal Lane</strong><span1>ออกคิว N001, N002…</span1></button>
+        <button class="queue-type-button queue-type-a" type="button" data-prefix="A"><strong>คิว A</strong><span>ออกคิว A001, A002…</span></button>
+        <button class="queue-type-button queue-type-c" type="button" data-prefix="C"><strong>คิว C</strong><span>ออกคิว C001, C002…</span></button>
       </div>
-      <br><h2 id="formMessage" class="message" role="status" aria-live="polite"></h2>
+      <p id="formMessage" class="message" role="status" aria-live="polite"></p>
     </section>
     <section class="panel"><div class="section-heading"><div><h2>คิวล่าสุดที่ออก</h2><p class="muted" id="lastUpdated">กำลังโหลดข้อมูล…</p></div></div><div id="recentIssued" class="recent-issued"></div></section>
   </section>
   <div id="globalError" class="error" role="alert"></div>
 </main>
 <footer>คิวรับสินค้า · ข้อมูลใช้ร่วมกันผ่านฐานข้อมูลกลาง</footer>
+<script src="/auth.js"></script>
 <script src="/issue.js" defer></script>
 </body></html>

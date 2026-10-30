@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#c8102e">
+  <title>เข้าสู่ระบบพนักงาน</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-icon">▣</div><div><h1>เข้าสู่ระบบ</h1><p>ระบบจัดการคิวสำหรับพนักงาน</p></div></div>
+  <nav class="header-nav"><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a></nav>
+</header>
+<main class="container">
+  <section class="panel login-panel">
+    <h2>เข้าสู่ระบบพนักงาน</h2>
+    <p class="muted">กรุณาใส่รหัสผ่านเพื่อเข้าใช้งานระบบออกคิวและเรียกคิว</p>
+    <form id="loginForm">
+      <div>
+        <label for="password">รหัสผ่าน</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+      </div>
+      <button id="loginBtn" class="primary" type="submit">เข้าสู่ระบบ</button>
+      <p id="loginError" class="error" role="alert"></p>
+    </form>
+  </section>
+</main>
+<footer>คิวรับสินค้า · ข้อมูลใช้ร่วมกันผ่านฐานข้อมูลกลาง</footer>
+<script>
+const form = document.getElementById("loginForm");
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = document.getElementById("loginBtn");
+  const error = document.getElementById("loginError");
+  button.disabled = true; error.textContent = "";
+  try {
+    const response = await fetch("/api/login", {
+      method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin",
+      body: JSON.stringify({ password: document.getElementById("password").value })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || `เกิดข้อผิดพลาด (${response.status})`);
+    location.replace("/staff");
+  } catch (err) {
+    error.textContent = err.message;
+    button.disabled = false;
+  }
+});
+</script>
+</body></html>

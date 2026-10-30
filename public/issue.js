@@ -4,6 +4,7 @@ async function api(url, options={}) {
   const headers={"Content-Type":"application/json", ...(options.headers||{})};
   const response=await fetch(url,{...options,headers,cache:"no-store"});
   const data=await response.json().catch(()=>({}));
+  if(response.status===401){location.href="/login";throw new Error(data.error||"กรุณาเข้าสู่ระบบ");}
   if(!response.ok) throw new Error(data.error||`เกิดข้อผิดพลาด (${response.status})`);
   return data;
 }

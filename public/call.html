@@ -6,10 +6,10 @@
   <title>จัดการคิวรอเรียก</title>
   <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="auth-pending">
 <header class="topbar">
   <div class="brand"><div class="brand-icon">▣</div><div><h1>จัดการคิวรอเรียก</h1><p>ระบบจัดการสำหรับพนักงาน</p></div></div>
-  <nav class="header-nav"><a class="header-link" href="/staff">ออกคิวใหม่</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a></nav>
+  <nav class="header-nav"><a class="header-link" href="/staff">ออกคิวใหม่</a><a class="header-link" href="/display" target="_blank" rel="noopener">จอแสดงคิว ↗</a><button id="logoutBtn" class="header-link logout-button" type="button">ออกจากระบบ</button></nav>
 </header>
 <main class="container">
   <section id="appPanel">
@@ -27,5 +27,6 @@
   <div id="globalError" class="error" role="alert"></div>
 </main>
 <footer>คิวรับสินค้า · ข้อมูลใช้ร่วมกันผ่านฐานข้อมูลกลาง</footer>
+<script src="/auth.js"></script>
 <script src="/app.js" defer></script>
 </body></html>
