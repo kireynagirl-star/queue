@@ -18,6 +18,14 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 const app = express();
 app.disable("x-powered-by");
 app.use(express.json({ limit: "20kb" }));
+// On Netlify, serverless-http pre-fills req.body with a raw Buffer, so express.json() skips it.
+app.use((req, _res, next) => {
+  if (Buffer.isBuffer(req.body)) {
+    try { req.body = req.body.length ? JSON.parse(req.body.toString("utf8")) : {}; }
+    catch { req.body = {}; }
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, "public"), { index: "index.html" }));
 
 const DISPLAY_PASSWORD = process.env.DISPLAY_PASSWORD || "";
